@@ -72,16 +72,13 @@ Get-Content -Path $InputFile | ForEach-Object {
     $Direction = $_.Substring(0, 1)
     $Distance = [int]$_.Substring(1)
 
-    # 0-99
-    # L -
-    # R
     $Point = switch ($Direction) {
-        "R" { $Point + $Distance }
-        "L" { $Point - $Distance }
+        "R" { ($Point + $Distance) % 100 }
+        "L" { ($Point - $Distance) % 100 }
         default {throw "Invalid rotation"}
     }
 
-    $Point = $Point - [int][Math]::Floor($Point/100) * 100
+    if ($Point -lt 0) {$Point += 100}
     if ($Point -eq 0) {$NullCounter++}
 
     Write-Output "$($Direction) $($Distance)`t->`t$($Point)"
