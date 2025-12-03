@@ -34,3 +34,32 @@ Adding up all the invalid IDs in this example produces 1227775554.
 
 What do you get if you add up all of the invalid IDs?
 #>
+
+param (
+    # Filepath containing the product ID ranges
+    [Parameter(Mandatory)]
+    [string]$Path
+)
+
+$Content = Get-Content -Path $Path
+
+$Ranges = $Content -split ','
+
+$InvalidCounter = 0
+$InvalidSum = 0
+
+foreach ($Range in $Ranges) {
+    [decimal]$Min, [decimal]$Max = $Range -split '-'
+    for ($i = $Min; $i -le $Max; $i++) {
+        $Id = $i.ToString()
+        if ($Id.Length % 2 -eq 0) {
+            if ($Id.Substring(0, $Id.Length/2) -eq $Id.Substring($Id.Length/2)) {
+                Write-Output "$Id invalid"
+                $InvalidCounter++
+                $InvalidSum += [decimal]$Id
+            }
+        }
+    }
+}
+
+Write-Output "Sum of invalid IDs: $InvalidSum"

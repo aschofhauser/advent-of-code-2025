@@ -10,5 +10,6 @@ Source: https://adventofcode.com/
 
 - 01_1: 1043
 - 01_2: 5963
+- 02_1: 30599400849
 
 </details>
