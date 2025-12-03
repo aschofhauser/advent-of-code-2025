@@ -8,6 +8,7 @@ Source: https://adventofcode.com/
 
 <summary>Solutions</summary>
 
-01_1: 1043
+- 01_1: 1043
+- 01_2: 5963
 
 </details>
