@@ -26,3 +26,28 @@ The total output joltage is the sum of the maximum joltage from each bank, so in
 
 There are many batteries in front of you. Find the maximum joltage possible from each bank; what is the total output joltage?
 #>
+
+param (
+    # Filepath containing the battery joltage ratings
+    [Parameter(Mandatory)]
+    [string]$Path
+)
+
+$Batteries = Get-Content -Path $Path
+
+$TotalJoltage = 0
+
+foreach ($Bank in $Batteries) {
+    # Make an array of numbers
+    $BankArray = $Bank.ToCharArray() | Foreach-Object { [int]$_.ToString() }
+    # Find the max value in the array except the last element
+    $Battery1 = [int]($BankArray[0..($BankArray.Count-2)] | Measure-Object -Maximum).Maximum
+    # Find the index of the max value
+    $Battery1Index = $BankArray.IndexOf($Battery1)
+    # Find the max value in the remaining part of the array
+    $Battery2 = [int]($BankArray[($Battery1Index+1)..($BankArray.Count-1)] | Measure-Object -Maximum).Maximum
+    Write-Output "$($Battery1) $($Battery2)"
+    $TotalJoltage += 10 * $Battery1 + $Battery2
+}
+
+Write-Output "Total output joltage: $($TotalJoltage)"
