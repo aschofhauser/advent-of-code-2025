@@ -22,3 +22,33 @@ The total output joltage is now much larger: 987654321111 + 811111111119 + 43423
 
 What is the new total output joltage?
 #>
+using namespace System.Collections.Generic
+
+param (
+    # Filepath containing the battery joltage ratings
+    [Parameter(Mandatory)]
+    [string]$Path
+)
+
+$Batteries = Get-Content -Path $Path
+
+$TotalJoltage = 0
+
+foreach ($Bank in $Batteries) {
+    # Make an array of numbers
+    $BankArray = $Bank.ToCharArray() | Foreach-Object { [int]$_.ToString() }
+    $StartIndex = 0
+    for ($i = 11; $i -ge 0; $i--) {
+        # Find the max value in the array except the last i element
+        $Battery = [int]($BankArray[($StartIndex)..($BankArray.Count-1-$i)] | Measure-Object -Maximum).Maximum
+        Write-Output "$($BankArray[($StartIndex)..($BankArray.Count-1-$i)] -join '') -> $($Battery)"
+        # Find the index of the max value
+        $BatteryIndex = $BankArray[($StartIndex)..($BankArray.Count-1-$i)].IndexOf($Battery)
+        # Reset start index
+        $StartIndex += $BatteryIndex + 1
+        # Add to total
+        $TotalJoltage += $Battery * [System.Math]::Pow(10, $i)
+    }
+}
+
+Write-Output "Total output joltage: $($TotalJoltage)"
