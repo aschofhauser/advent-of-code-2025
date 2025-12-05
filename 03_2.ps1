@@ -22,7 +22,6 @@ The total output joltage is now much larger: 987654321111 + 811111111119 + 43423
 
 What is the new total output joltage?
 #>
-using namespace System.Collections.Generic
 
 param (
     # Filepath containing the battery joltage ratings
