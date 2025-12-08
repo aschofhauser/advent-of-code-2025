@@ -47,7 +47,7 @@ param (
 
 $Diagram = Get-Content -Path $Path
 
-$AccessableRollCount = 0
+$AccessibleRollCount = 0
 
 for ($y = 0; $y -lt $Diagram.Count; $y++) {
     for ($x = 0; $x -lt $Diagram[$y].Length; $x++) {
@@ -62,10 +62,10 @@ for ($y = 0; $y -lt $Diagram.Count; $y++) {
             }
         }
         if ($AdjacentRollCount -eq 0) { Write-Host "." -NoNewline }
-        elseif ($AdjacentRollCount -le 4) { $AccessableRollCount++; Write-Host "x" -NoNewline }
+        elseif ($AdjacentRollCount -le 4) { $AccessibleRollCount++; Write-Host "x" -NoNewline }
         else { Write-Host '@' -NoNewline }
     }
     Write-Host ''
 }
 
-Write-Output "$($AccessableRollCount) rolls of paper can be accessed"
+Write-Output "$($AccessibleRollCount) rolls of paper can be accessed"
