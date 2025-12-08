@@ -40,7 +40,7 @@ Consider your complete diagram of the paper roll locations. How many rolls of pa
 #>
 
 param (
-    # Filepath containing the battery joltage ratings
+    # Filepath containing the diagram of the paper roll locations
     [Parameter(Mandatory)]
     [string]$Path
 )
