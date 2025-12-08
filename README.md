@@ -16,5 +16,6 @@ Source: https://adventofcode.com/
 - 03_2: 171990312704598
 - 04_1: 1478
 - 04_2: 9120
+- 05_1: 701
 
 </details>

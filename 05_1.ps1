@@ -35,3 +35,28 @@ So, in this example, 3 of the available ingredient IDs are fresh.
 
 Process the database file from the new inventory management system. How many of the available ingredient IDs are fresh?
 #>
+
+param (
+    # Filepath containing the ingredient database
+    [Parameter(Mandatory)]
+    [string]$Path
+)
+
+$Database = Get-Content -Path $Path
+
+$FreshRanges = $Database | Where-Object { $_ -match '^\d+-\d+$' }
+$Available = $Database | Where-Object { $_ -match '^\d+$' } | ForEach-Object { [double]$_ }
+
+$FreshCounter = 0
+
+foreach ($Id in $Available) {
+    foreach ($Range in $FreshRanges) {
+        [double]$Min, [double]$Max = $Range -split '-'
+        if ($Id -ge $Min -and $Id -le $Max) {
+            $FreshCounter++
+            break
+        }
+    }
+}
+
+Write-Output "$($FreshCounter) available ingredients are fresh"
