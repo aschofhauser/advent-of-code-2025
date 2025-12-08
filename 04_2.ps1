@@ -131,7 +131,7 @@ Start with your original diagram. How many rolls of paper in total can be remove
 #>
 
 param (
-    # Filepath containing the battery joltage ratings
+    # Filepath containing the diagram of the paper roll locations
     [Parameter(Mandatory)]
     [string]$Path
 )
