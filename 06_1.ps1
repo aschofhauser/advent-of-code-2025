@@ -28,3 +28,26 @@ Of course, the actual worksheet is much wider. You'll need to make sure to unrol
 
 Solve the problems on the math worksheet. What is the grand total found by adding together all of the answers to the individual problems?
 #>
+
+param (
+    # Filepath containing the math worksheet
+    [Parameter(Mandatory)]
+    [string]$Path
+)
+
+$WorkSheet = Get-Content -Path $Path
+
+$Operations = $WorkSheet[-1].Trim() -split '\s+'
+
+$Numbers = @()
+foreach ($Line in $WorkSheet[0..($WorkSheet.Count-2)]) {
+    $Numbers += ,@($Line.Trim() -split '\s+')
+}
+
+$GrandTotal = 0
+
+for ($i=0; $i -lt $Operations.Count; $i++) {
+    $GrandTotal += Invoke-Expression (($Numbers | ForEach-Object { $_[$i] }) -join "$($Operations[$i])")
+}
+
+Write-Output "Grand total: $($GrandTotal)"
