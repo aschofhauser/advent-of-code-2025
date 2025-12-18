@@ -20,3 +20,36 @@ Now, the grand total is 1058 + 3253600 + 625 + 8544 = 3263827.
 
 Solve the problems on the math worksheet again. What is the grand total found by adding together all of the answers to the individual problems?
 #>
+
+param (
+    # Filepath containing the math worksheet
+    [Parameter(Mandatory)]
+    [string]$Path
+)
+
+$WorkSheet = Get-Content -Path $Path
+
+$Operations = $WorkSheet[-1]
+
+$Numbers = $WorkSheet[0..($WorkSheet.Count-2)]
+
+$GrandTotal = 0
+
+$ProblemNumbers = @()
+for ($i=$Operations.Length-1; $i -ge 0; $i--) {
+    $Number = ""
+    foreach ($Line in $Numbers) {
+        $n = $Line.Substring($i, 1)
+        if ($n -notmatch '\s') {$Number += $n}
+    }
+    $ProblemNumbers += $Number
+    if ($Operations[$i] -notmatch '\s') {
+        $Problem = $ProblemNumbers -join "$($Operations[$i])"
+        $Problem
+        $GrandTotal += Invoke-Expression $Problem
+        $i-- # Next column should be empty
+        $ProblemNumbers = @()
+    }
+}
+
+Write-Output "Grand total: $($GrandTotal)"
